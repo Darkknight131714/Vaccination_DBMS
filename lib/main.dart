@@ -128,29 +128,31 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                 ),
                 onPressed: () async {
+                  context.loaderOverlay.hide();
                   context.loaderOverlay.show();
                   String result = await login(email, password);
+
                   if (result == 'True') {
                     curr_email = email;
                     makeMap();
                     String userpower = await checkPower(email);
                     context.loaderOverlay.hide();
                     if (userpower == "Admin") {
-                      Navigator.push(
+                      Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(builder: (context) {
                           return AdminHomePage();
                         }),
                       );
                     } else if (userpower == "Staff") {
-                      Navigator.push(
+                      Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(builder: (context) {
                           return StaffHomePage();
                         }),
                       );
                     } else {
-                      Navigator.push(
+                      Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(builder: (context) {
                           return HomePage();

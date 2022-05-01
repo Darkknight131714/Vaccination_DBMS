@@ -105,14 +105,27 @@ class _HomePageState extends State<HomePage> {
       child: Scaffold(
         appBar: AppBar(
           title: const Text("HomePage"),
+          leading: Hero(
+            tag: "logo",
+            child: Image.asset(
+              'images/vacc.png',
+              width: 100,
+              height: 100,
+            ),
+          ),
           actions: [
-            Hero(
-              tag: "logo",
-              child: Image.asset(
-                'images/vacc.png',
-                width: 100,
-                height: 100,
-              ),
+            IconButton(
+              onPressed: () {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) {
+                      return LoginPage();
+                    },
+                  ),
+                );
+              },
+              icon: Icon(Icons.logout),
             ),
           ],
         ),

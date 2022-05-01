@@ -30,14 +30,27 @@ class _AdminHomePageState extends State<AdminHomePage> {
     return Scaffold(
         appBar: AppBar(
           title: const Text("AdminHomePage"),
+          leading: Hero(
+            tag: "logo",
+            child: Image.asset(
+              'images/vacc.png',
+              width: 100,
+              height: 100,
+            ),
+          ),
           actions: [
-            Hero(
-              tag: "logo",
-              child: Image.asset(
-                'images/vacc.png',
-                width: 100,
-                height: 100,
-              ),
+            IconButton(
+              onPressed: () {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) {
+                      return LoginPage();
+                    },
+                  ),
+                );
+              },
+              icon: Icon(Icons.logout),
             ),
           ],
         ),

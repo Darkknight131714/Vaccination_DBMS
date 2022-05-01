@@ -118,6 +118,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   ),
                 ),
                 onPressed: () async {
+                  context.loaderOverlay.hide();
                   context.loaderOverlay.show();
                   String result = await register(email, password, username);
                   if (result == 'True') {
@@ -125,22 +126,23 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     makeMap();
                     String userpower = await checkPower(email);
                     context.loaderOverlay.hide();
+                    Navigator.pop(context);
                     if (userpower == "Admin") {
-                      Navigator.push(
+                      Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(builder: (context) {
                           return AdminHomePage();
                         }),
                       );
                     } else if (userpower == "Staff") {
-                      Navigator.push(
+                      Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(builder: (context) {
                           return StaffHomePage();
                         }),
                       );
                     } else {
-                      Navigator.push(
+                      Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(builder: (context) {
                           return HomePage();
