@@ -131,7 +131,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(builder: (context) {
-                          return AdminHomePage();
+                          return AdminMain();
                         }),
                       );
                     } else if (userpower == "Staff") {

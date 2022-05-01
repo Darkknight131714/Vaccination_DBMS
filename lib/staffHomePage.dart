@@ -388,9 +388,18 @@ class _StaffHomePageState extends State<StaffHomePage> {
                 return Card(
                   child: ListTile(
                     title: Text(vaccine_map[stockList[i].vaccineCode]!.name),
-                    subtitle: Text("Efficacy: " +
-                        vaccine_map[stockList[i].vaccineCode]!.efficacy +
-                        "%"),
+                    subtitle: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text("Efficacy: " +
+                            vaccine_map[stockList[i].vaccineCode]!.efficacy +
+                            "%"),
+                        Text(
+                          "Stock Amount Left: " +
+                              stockList[i].stockTotal.toString(),
+                        ),
+                      ],
+                    ),
                     leading: const Icon(Icons.vaccines),
                     trailing:
                         Text(vaccine_map[stockList[i].vaccineCode]!.cost + "₹"),

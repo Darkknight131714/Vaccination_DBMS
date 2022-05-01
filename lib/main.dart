@@ -141,7 +141,7 @@ class _LoginPageState extends State<LoginPage> {
                       Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(builder: (context) {
-                          return AdminHomePage();
+                          return AdminMain();
                         }),
                       );
                     } else if (userpower == "Staff") {

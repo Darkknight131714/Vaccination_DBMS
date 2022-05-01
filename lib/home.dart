@@ -180,6 +180,10 @@ class _HomePageState extends State<HomePage> {
                                           .toString()
                                           .substring(0, 10),
                                 ),
+                                Text(
+                                  "Stock Amount Left: " +
+                                      stockList[i].stockTotal.toString(),
+                                ),
                               ],
                             ),
                           ),
