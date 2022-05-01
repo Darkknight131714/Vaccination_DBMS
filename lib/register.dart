@@ -1,7 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:vaccination_dbms/main.dart';
+import 'package:vaccination_dbms/staffHomePage.dart';
 
+import 'adminHomePage.dart';
+import 'const.dart';
 import 'func.dart';
 import 'home.dart';
+import 'package:loader_overlay/loader_overlay.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({Key? key}) : super(key: key);
@@ -14,96 +20,149 @@ class _RegisterScreenState extends State<RegisterScreen> {
   String email = '', password = "", username = "";
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text("Register Page"),
-      ),
-      body: SingleChildScrollView(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 15.0),
-              child: TextField(
-                style: TextStyle(color: Colors.black),
-                keyboardType: TextInputType.emailAddress,
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10.0),
-                  ),
-                  hintStyle: TextStyle(color: Colors.black),
-                  filled: true,
-                  fillColor: Colors.white,
-                  hintText: "Username",
-                ),
-                onChanged: (value) {
-                  username = value;
-                },
+    return LoaderOverlay(
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text("Register Page"),
+        ),
+        body: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const SizedBox(
+                height: 10,
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 15.0),
-              child: TextField(
-                style: TextStyle(color: Colors.black),
-                keyboardType: TextInputType.emailAddress,
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10.0),
-                  ),
-                  hintStyle: TextStyle(color: Colors.black),
-                  filled: true,
-                  fillColor: Colors.white,
-                  hintText: "Email",
-                ),
-                onChanged: (value) {
-                  email = value;
-                },
+              const Text(
+                "ImmunoFind",
+                style: kHeading,
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 15.0),
-              child: TextField(
-                obscureText: true,
-                style: const TextStyle(color: Colors.black),
-                keyboardType: TextInputType.emailAddress,
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10.0),
-                  ),
-                  hintStyle: const TextStyle(color: Colors.black),
-                  filled: true,
-                  fillColor: Colors.white,
-                  hintText: "Password",
-                ),
-                onChanged: (value) {
-                  password = value;
-                },
+              Image.asset(
+                'images/vacc.png',
+                width: 200,
+                height: 200,
               ),
-            ),
-            const SizedBox(
-              height: 50,
-            ),
-            ElevatedButton(
-              onPressed: () async {
-                String result = await register(email, password, username);
-                if (result == 'True') {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) {
-                      return HomePage();
-                    }),
-                  );
-                } else {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text(result),
+              Padding(
+                padding:
+                    const EdgeInsets.symmetric(vertical: 7.0, horizontal: 20),
+                child: TextField(
+                  style: TextStyle(color: Colors.black),
+                  keyboardType: TextInputType.emailAddress,
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10.0),
                     ),
-                  );
-                }
-              },
-              child: const Text("Register"),
-            ),
-          ],
+                    hintStyle: TextStyle(color: Colors.black),
+                    filled: true,
+                    fillColor: Colors.white,
+                    hintText: "Username",
+                  ),
+                  onChanged: (value) {
+                    username = value;
+                  },
+                ),
+              ),
+              Padding(
+                padding:
+                    const EdgeInsets.symmetric(vertical: 7.0, horizontal: 20),
+                child: TextField(
+                  style: TextStyle(color: Colors.black),
+                  keyboardType: TextInputType.emailAddress,
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10.0),
+                    ),
+                    hintStyle: TextStyle(color: Colors.black),
+                    filled: true,
+                    fillColor: Colors.white,
+                    hintText: "Email",
+                  ),
+                  onChanged: (value) {
+                    email = value;
+                  },
+                ),
+              ),
+              Padding(
+                padding:
+                    const EdgeInsets.symmetric(vertical: 7.0, horizontal: 20),
+                child: TextField(
+                  obscureText: true,
+                  style: const TextStyle(color: Colors.black),
+                  keyboardType: TextInputType.emailAddress,
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10.0),
+                    ),
+                    hintStyle: const TextStyle(color: Colors.black),
+                    filled: true,
+                    fillColor: Colors.white,
+                    hintText: "Password",
+                  ),
+                  onChanged: (value) {
+                    password = value;
+                  },
+                ),
+              ),
+              const SizedBox(
+                height: 50,
+              ),
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  primary: Colors.orange,
+                  minimumSize: Size(120, 40),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10.0),
+                    side: BorderSide(
+                      color: Colors.transparent,
+                      width: 2.0,
+                    ),
+                  ),
+                ),
+                onPressed: () async {
+                  context.loaderOverlay.show();
+                  String result = await register(email, password, username);
+                  if (result == 'True') {
+                    curr_email = email;
+                    makeMap();
+                    String userpower = await checkPower(email);
+                    context.loaderOverlay.hide();
+                    if (userpower == "Admin") {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) {
+                          return AdminHomePage();
+                        }),
+                      );
+                    } else if (userpower == "Staff") {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) {
+                          return StaffHomePage();
+                        }),
+                      );
+                    } else {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) {
+                          return HomePage();
+                        }),
+                      );
+                    }
+                  } else {
+                    context.loaderOverlay.hide();
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text(result),
+                      ),
+                    );
+                  }
+                },
+                child: const Text(
+                  "Register",
+                  style: TextStyle(fontSize: 20, color: Colors.white),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
